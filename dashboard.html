@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Secure Government Portal</title>
+  <style>
+    :root {
+      --primary-color: #0d395f;
+      --secondary-color: #1a6dad;
+      --accent-color: #e63946;
+      --light-color: #f1faee;
+      --dark-color: #1d3557;
+      --success-color: #2a9d8f;
+      --warning-color: #e9c46a;
+      --error-color: #e63946;
+      --gray-light: #f8f9fa;
+      --gray: #6c757d;
+      --border-radius: 4px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-light);
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      font-size: 1.8rem;
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-badge {
+      background-color: var(--secondary-color);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid white;
+      color: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav {
+      background-color: white;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-item {
+      color: var(--gray);
+      text-decoration: none;
+      padding: 0.5rem 0;
+      position: relative;
+      font-weight: 500;
+    }
+
+    .nav-item.active {
+      color: var(--primary-color);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .welcome-banner {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .welcome-banner h1 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-banner p {
+      color: var(--gray);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+
+    .alert-list {
+      list-style: none;
+    }
+
+    .alert-item {
+      padding: 0.75rem;
+      border-left: 3px solid var(--warning-color);
+      background-color: rgba(233, 196, 106, 0.1);
+      margin-bottom: 0.75rem;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+
+    .alert-item.critical {
+      border-left-color: var(--error-color);
+      background-color: rgba(230, 57, 70, 0.1);
+    }
+
+    .alert-item.info {
+      border-left-color: var(--secondary-color);
+      background-color: rgba(26, 109, 173, 0.1);
+    }
+
+    .coordinates-panel {
+      background-color: rgba(42, 157, 143, 0.1);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-top: 1rem;
+    }
+
+    .coordinates-header {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--dark-color);
+    }
+
+    .coordinates-list {
+      font-family: monospace;
+      color: var(--gray);
+    }
+
+    .footer {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .nav {
+        padding: 0.75rem 1rem;
+        overflow-x: auto;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🔒</span>
+      <span class="logo-text">Government Secure Portal</span>
+    </div>
+
+    <div class="user-info">
+      <div class="user-badge">
+        <span id="userRole">User</span>
+        <span>|</span>
+        <span id="username">username</span>
+      </div>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="#" class="nav-item active">Dashboard</a>
+    <a href="#" class="nav-item">Reports</a>
+    <a href="#" class="nav-item">Documents</a>
+    <a href="#" class="nav-item">Settings</a>
+    <a href="#" class="nav-item" id="adminLink" style="display: none;">Admin Panel</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="welcome-banner">
+      <h1>Dashboard</h1>
+      <p>Welcome back. Here's the latest security and monitoring information.</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Active Alerts</h2>
+          <span>Protección Civil</span>
+        </div>
+        <ul class="alert-list">
+          <li class="alert-item critical">
+            <strong>Weather Warning</strong>
+            <p>Heavy rain expected in Northern Madrid - 09:32 AM</p>
+          </li>
+          <li class="alert-item">
+            <strong>Road Closure</strong>
+            <p>A-6 motorway closed between km 12-15 until 15:00 - 08:15 AM</p>
+          </li>
+          <li class="alert-item info">
+            <strong>Security Update</strong>
+            <p>Enhanced surveillance in Plaza Mayor area - 07:45 AM</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Saved Coordinates</h2>
+          <span>Madrid, Spain</span>
+        </div>
+        <div class="coordinates-panel">
+          <div class="coordinates-header">Primary Locations:</div>
+          <div class="coordinates-list">
+            <div>40.4168° N, 3.7038° W (Central Office)</div>
+            <div>40.4180° N, 3.6945° W (Surveillance Point Alpha)</div>
+            <div>40.4150° N, 3.7102° W (Backup Facility)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Traffic Alerts</h2>
+          <span>Madrid</span>
+        </div>
+        <ul class="alert-list">
+          <li class="alert-item">
+            <strong>Heavy Traffic</strong>
+            <p>M-30 inner ring road, congestion between exits 12-15</p>
+          </li>
+          <li class="alert-item info">
+            <strong>Public Transport</strong>
+            <p>Line 6 metro running with 10 min delays</p>
+          </li>
+          <li class="alert-item">
+            <strong>Roadwork Notice</strong>
+            <p>Paseo de la Castellana, reduced lanes until Friday</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Security Status</h2>
+          <span>All Systems Operational</span>
+        </div>
+        <ul class="alert-list">
+          <li class="alert-item info">
+            <strong>Authentication</strong>
+            <p>Multi-factor authentication active</p>
+          </li>
+          <li class="alert-item info">
+            <strong>Network Security</strong>
+            <p>All firewalls operational, no intrusions detected</p>
+          </li>
+          <li class="alert-item info">
+            <strong>Data Encryption</strong>
+            <p>All transmissions encrypted with AES-256</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Official Government Portal • Security Level: CLASSIFIED • Last updated: <span id="currentDate"></span></p>
+  </footer>
+
+  <script>
+    // Check if user is logged in
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'index.html';
+    }
+
+    // Display user info
+    document.getElementById('username').textContent = sessionStorage.getItem('username');
+    document.getElementById('userRole').textContent = sessionStorage.getItem('role');
+
+    // Show admin link if user is admin
+    if (sessionStorage.getItem('role') === 'admin') {
+      document.getElementById('adminLink').style.display = 'block';
+    }
+
+    // Set current date
+    const now = new Date();
+    document.getElementById('currentDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+
+</html>
